@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07080b">
+<title>REALITY</title>
+<meta name="description" content="Two observers, one universe, one law. Neither of you can win alone.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#07080b; --deep:#0d0f14; --line:#1b1f27;
+    --ink:#e9e7e2; --dim:#7c8191; --faint:#464c59;
+    --me:#d8b26a; --them:#6f93b8; --hot:#c4645c;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--void);color:var(--ink)}
+  body{
+    font:15px/1.55 "IBM Plex Mono",ui-monospace,Menlo,monospace;
+    min-height:100dvh;display:flex;align-items:center;justify-content:center;
+    padding:24px 16px;
+  }
+  .app{width:min(720px,100%);display:flex;flex-direction:column;gap:24px}
+  .hidden{display:none!important}
+
+  h1{
+    font-family:Fraunces,Georgia,serif;font-weight:300;
+    font-size:clamp(32px,9vw,52px);letter-spacing:.3em;margin:0;text-indent:.3em;
+    text-align:center;
+  }
+  .creed{color:var(--dim);font-size:13px;text-align:center;margin:0}
+  .creed b{color:var(--ink);font-weight:500}
+
+  /* ---------- the proof, shown before you play ---------- */
+  .proof{
+    background:var(--deep);border:1px solid var(--line);border-radius:3px;
+    padding:20px 18px;display:flex;flex-direction:column;gap:14px;
+  }
+  .proof-cap{font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--faint);text-align:center}
+  .twin{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .twin figure{margin:0;display:flex;flex-direction:column;gap:6px}
+  .twin figcaption{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--dim);text-align:center}
+  .twin svg{width:100%;height:56px;display:block;background:#090b0f;border-radius:2px}
+  .punch{font-size:12.5px;color:var(--ink);text-align:center;line-height:1.6}
+  .punch em{color:var(--me);font-style:normal}
+
+  /* ---------- door ---------- */
+  .door{display:flex;flex-direction:column;gap:12px}
+  .row{display:flex;gap:9px;flex-wrap:wrap}
+  .row input{
+    flex:1;min-width:140px;background:var(--deep);border:1px solid var(--line);
+    border-radius:2px;color:var(--ink);padding:14px 15px;font:inherit;font-size:16px;
+    letter-spacing:.22em;text-transform:uppercase;outline:none;text-align:center;
+  }
+  .row input::placeholder{letter-spacing:.1em;color:var(--faint)}
+  .row input:focus{border-color:var(--faint)}
+  button{
+    font:inherit;font-size:13px;letter-spacing:.06em;cursor:pointer;
+    background:transparent;border:1px solid var(--line);color:var(--dim);
+    border-radius:2px;padding:14px 20px;transition:border-color .16s,color .16s;
+  }
+  button:hover:not(:disabled),button:focus-visible:not(:disabled){
+    color:var(--ink);border-color:var(--faint);outline:none}
+  button:disabled{opacity:.28;cursor:not-allowed}
+  button.key{border-color:#3a3020;color:var(--me)}
+  button.key:hover:not(:disabled){border-color:var(--me)}
+  button.danger{border-color:#3d2624;color:var(--hot)}
+  button.danger:hover:not(:disabled){border-color:var(--hot)}
+  button.on{background:#15181f;color:var(--ink);border-color:var(--faint)}
+
+  /* ---------- lobby ---------- */
+  .lobby{background:var(--deep);border:1px solid var(--line);border-radius:3px;
+    padding:30px 22px;text-align:center;display:flex;flex-direction:column;gap:14px}
+  .code{font-family:Fraunces,Georgia,serif;font-size:clamp(40px,13vw,64px);
+    font-weight:300;letter-spacing:.22em;text-indent:.22em;color:var(--me)}
+  .lobby p{margin:0;color:var(--dim);font-size:12.5px}
+  .pulse{color:var(--faint);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+
+  /* ---------- stage ---------- */
+  .stage{background:var(--deep);border:1px solid var(--line);border-radius:3px;
+    padding:24px 20px;display:flex;flex-direction:column;gap:18px}
+  .stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .stage-head .axis{color:var(--me)}
+  .reading{font-family:Fraunces,Georgia,serif;font-size:clamp(30px,10vw,42px);
+    font-weight:300;text-align:center;color:var(--me);font-variant-numeric:tabular-nums}
+  .reading.void{color:var(--faint);font-size:14px;font-family:"IBM Plex Mono",monospace;
+    letter-spacing:.14em;text-transform:uppercase}
+  .bar svg,.trail svg{display:block;width:100%;overflow:visible}
+  .bar svg{height:52px}
+  .trail svg{height:46px}
+  .trail-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--faint);text-align:center;margin-top:2px}
+  .acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+  .verdict{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);
+    padding-top:16px}
+  .verdict-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .laws{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+  .laws button{text-align:left;padding:11px 13px;line-height:1.35}
+  .laws .name{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+  .laws .desc{display:block;font-size:11px;color:var(--faint);margin-top:3px}
+
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .seat{background:var(--deep);padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+  .seat .who{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .seat.mine .who{color:var(--me)} .seat.theirs .who{color:var(--them)}
+  .seat .score{font-family:Fraunces,Georgia,serif;font-size:24px;font-weight:300;
+    font-variant-numeric:tabular-nums}
+  .seat .note{font-size:11px;color:var(--dim);min-height:15px}
+
+  .log{font-size:11.5px;color:var(--faint);display:flex;flex-direction:column;gap:2px;
+    min-height:60px}
+  .log div:last-child{color:var(--dim)}
+
+  .curtain{border:1px solid var(--line);border-radius:3px;background:var(--deep);
+    padding:24px;text-align:center;display:flex;flex-direction:column;gap:10px}
+  .curtain .line{font-family:Fraunces,Georgia,serif;font-size:25px;font-weight:300}
+  .curtain .truth{font-size:12.5px;color:var(--dim)}
+
+  .toast{position:fixed;left:50%;transform:translateX(-50%);
+    bottom:calc(22px + env(safe-area-inset-bottom));background:#15181f;
+    border:1px solid var(--line);border-radius:100px;padding:9px 18px;font-size:12.5px;
+    opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}
+  .toast.show{opacity:1}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  @media (max-width:520px){.pair{grid-template-columns:1fr}.twin{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header style="display:flex;flex-direction:column;gap:8px">
+    <h1>REALITY</h1>
+    <p class="creed">Two observers. One universe. One law.<br>
+      Neither of you can win <b>alone</b>.</p>
+  </header>
+
+  <!-- ============ DOOR ============ -->
+  <section id="door">
+    <div class="proof">
+      <div class="proof-cap">Why you need the other player</div>
+      <div class="twin">
+        <figure>
+          <svg id="twin-a" viewBox="0 0 100 40" preserveAspectRatio="none"></svg>
+          <figcaption>a universe turning forward</figcaption>
+        </figure>
+        <figure>
+          <svg id="twin-b" viewBox="0 0 100 40" preserveAspectRatio="none"></svg>
+          <figcaption>a universe turning backward</figcaption>
+        </figure>
+      </div>
+      <p class="punch">Those are two opposite universes.<br>
+        From your axis they cast the <em>same shadow, forever</em>.<br>
+        The other observer sees the angle you cannot. Trade, and you both find out.</p>
+    </div>
+
+    <div class="door" style="margin-top:16px">
+      <div class="row">
+        <button class="key" id="btn-new" style="flex:1">Create a room</button>
+      </div>
+      <div class="row">
+        <input id="code-in" maxlength="4" placeholder="room code" autocomplete="off"
+               autocapitalize="characters" spellcheck="false" inputmode="text">
+        <button id="btn-join">Join</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOBBY ============ -->
+  <section id="lobby" class="lobby hidden">
+    <p>Send this code to the other observer</p>
+    <div class="code" id="lobby-code">····</div>
+    <button id="btn-copy" style="align-self:center">Copy link</button>
+    <div class="pulse" id="lobby-status">waiting for a second observer</div>
+  </section>
+
+  <!-- ============ GAME ============ -->
+  <section id="game" class="hidden" style="display:flex;flex-direction:column;gap:18px">
+    <div class="stage">
+      <div class="stage-head">
+        <span>room <span class="axis" id="hud-room">····</span> · your axis <span class="axis" id="axis">—</span></span>
+        <span id="clock">step 0</span>
+      </div>
+
+      <div class="reading void" id="reading">nothing observed</div>
+
+      <div class="bar">
+        <svg viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="0" y1="13" x2="100" y2="13" stroke="#1b1f27" stroke-width=".4"/>
+          <line x1="50" y1="8" x2="50" y2="18" stroke="#1b1f27" stroke-width=".4"/>
+          <g id="ghosts"></g>
+          <circle id="mark" cx="50" cy="13" r="1.7" fill="#d8b26a" opacity="0"/>
+        </svg>
+      </div>
+
+      <div>
+        <div class="trail"><svg id="trail" viewBox="0 0 100 40" preserveAspectRatio="none"></svg></div>
+        <div class="trail-label" id="trail-label">your readings</div>
+      </div>
+
+      <div class="acts">
+        <button id="btn-observe" class="key">Observe</button>
+        <button id="btn-advance">Turn the universe</button>
+        <button id="btn-trade">Offer a trade</button>
+      </div>
+
+      <div class="verdict">
+        <div class="verdict-label">Name the law · right ends it, wrong ends you</div>
+        <div class="laws" id="laws"></div>
+        <button id="btn-lock" class="danger" disabled>Lock it in</button>
+      </div>
+    </div>
+
+    <div class="pair">
+      <div class="seat mine">
+        <span class="who">You · <span id="me-id">—</span></span>
+        <span class="score" id="me-score">0</span>
+        <span class="note" id="me-note"></span>
+      </div>
+      <div class="seat theirs">
+        <span class="who">Them · <span id="them-id">—</span></span>
+        <span class="score" id="them-score">0</span>
+        <span class="note" id="them-note">waiting</span>
+      </div>
+    </div>
+
+    <div class="log" id="log"></div>
+
+    <div class="curtain hidden" id="curtain">
+      <div class="line" id="curtain-line"></div>
+      <div class="truth" id="curtain-truth"></div>
+      <button id="btn-again" style="align-self:center">Play again</button>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Realtime half lives on Cloudflare; this page is static on GitHub Pages.
+// Same origin when the Worker serves this page; the GitHub Pages mirror
+// falls back to the Worker for its sockets.
+const REALTIME = location.hostname.endsWith("workers.dev")
+  ? location.origin
+  : "https://reality-game.consciousness-portal.workers.dev";
+const $ = (id) => document.getElementById(id);
+const LAW_NAMES = { spin_forward:"Forward", spin_backward:"Backward", frozen:"Frozen" };
+let ws = null, ME = null, PICK = null, ROOM = null;
+
+/* ---------- the proof on the door ---------- */
+// Two genuinely opposite universes. Forward starts at t0, backward starts at -t0.
+// On the cos axis their shadows coincide exactly, which is the whole game.
+(function drawTwins(){
+  const STEP = 40 * Math.PI / 180, t0 = 1.1, N = 11;
+  const fwd = [], bwd = [];
+  for (let k = 0; k <= N; k++){
+    fwd.push(Math.cos(t0 + k * STEP));
+    bwd.push(Math.cos(-t0 - k * STEP));
+  }
+  for (const [id, series] of [["twin-a", fwd], ["twin-b", bwd]]) {
+    const svg = $(id);
+    const pts = series.map((v,i) => `${(i/N)*100},${20 - v*15}`).join(" ");
+    svg.innerHTML =
+      `<line x1="0" y1="20" x2="100" y2="20" stroke="#1b1f27" stroke-width=".4"/>` +
+      `<polyline points="${pts}" fill="none" stroke="#d8b26a" stroke-width="1" opacity=".85"/>` +
+      series.map((v,i)=>`<circle cx="${(i/N)*100}" cy="${20-v*15}" r="1.2" fill="#d8b26a"/>`).join("");
+  }
+})();
+
+/* ---------- door ---------- */
+$("btn-new").onclick = async () => {
+  const r = await fetch(`${REALTIME}/new`);
+  const { room } = await r.json();
+  enter(room);
+};
+$("btn-join").onclick = () => {
+  const code = $("code-in").value.trim().toUpperCase();
+  if (code.length < 3) { toast("Enter the room code"); return; }
+  enter(code);
+};
+$("code-in").addEventListener("keydown", (e) => { if (e.key === "Enter") $("btn-join").click(); });
+
+const fromUrl = location.hash.slice(1).toUpperCase();
+if (fromUrl) { $("code-in").value = fromUrl; enter(fromUrl); }
+
+function enter(room){
+  ROOM = room;
+  location.hash = room;
+  $("door").classList.add("hidden");
+  $("lobby").classList.remove("hidden");
+  $("lobby-code").textContent = room;
+  $("hud-room").textContent = room;
+  connect(room);
+}
+
+$("btn-copy").onclick = async () => {
+  try { await navigator.clipboard.writeText(location.href); toast("Link copied"); }
+  catch { toast(location.href); }
+};
+
+/* ---------- socket ---------- */
+function connect(room){
+  ws = new WebSocket(`${REALTIME.replace(/^http/, "ws")}/ws/${room}`);
+  ws.onmessage = (ev) => {
+    const msg = JSON.parse(ev.data);
+    if (msg.type === "error"){
+      if (msg.error === "room_full") { toast("That room is full"); back(); }
+      return;
+    }
+    if (msg.type === "joined"){
+      ME = msg.player_id;
+      $("me-id").textContent = ME;
+      $("them-id").textContent = ME === "A" ? "B" : "A";
+      $("axis").textContent = msg.axis + "θ";
+      buildLaws(msg.state.laws);
+    }
+    if (msg.state) render(msg.state);
+  };
+  ws.onclose = () => { $("log").textContent = "connection closed"; };
+}
+function back(){
+  $("lobby").classList.add("hidden");
+  $("game").classList.add("hidden");
+  $("door").classList.remove("hidden");
+  location.hash = "";
+}
+const send = (action, extra={}) => ws && ws.readyState === 1 && ws.send(JSON.stringify({action, ...extra}));
+$("btn-observe").onclick = () => send("observe");
+$("btn-advance").onclick = () => send("advance");
+$("btn-trade").onclick   = () => send("trade");
+$("btn-lock").onclick    = () => PICK && send("lock");
+$("btn-again").onclick   = () => { PICK = null; send("restart"); };
+
+function buildLaws(laws){
+  const box = $("laws"); box.innerHTML = "";
+  for (const law of laws){
+    const b = document.createElement("button");
+    b.innerHTML = `<span class="name">${LAW_NAMES[law.id]||law.id}</span>`
+                + `<span class="desc">${law.description}</span>`;
+    b.onclick = () => {
+      PICK = law.id;
+      [...box.children].forEach(c => c.classList.toggle("on", c === b));
+      $("btn-lock").disabled = false;
+      send("hypothesize", { law: law.id });
+    };
+    box.appendChild(b);
+  }
+}
+
+/* ---------- render ---------- */
+function render(s){
+  const them = ME === "A" ? "B" : "A";
+  const me = s.players[ME] || {}, they = s.players[them] || {};
+
+  // The server tells us how many observers are seated; two means we can start.
+  if (s.seated >= 2) {
+    $("lobby").classList.add("hidden");
+    $("game").classList.remove("hidden");
+  } else {
+    $("lobby").classList.remove("hidden");
+    $("game").classList.add("hidden");
+    $("lobby-status").textContent = "waiting for a second observer";
+  }
+
+  $("clock").textContent = `step ${s.step} / ${s.max_steps}`;
+  $("me-score").textContent = me.score ?? 0;
+  $("them-score").textContent = they.score ?? 0;
+
+  const mine  = (me.readings || []).filter(r => r.source === "self");
+  const given = (me.readings || []).filter(r => r.source !== "self");
+  const latest = mine[mine.length - 1];
+
+  const el = $("reading");
+  if (latest){ el.classList.remove("void");
+    el.textContent = latest.value > 0 ? `+${latest.value.toFixed(4)}` : latest.value.toFixed(4); }
+  else { el.classList.add("void"); el.textContent = "nothing observed"; }
+
+  const ghosts = $("ghosts"); ghosts.innerHTML = "";
+  mine.slice(-7, -1).forEach((r, i, a) => {
+    const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    c.setAttribute("cx",(r.value+1)*50); c.setAttribute("cy",13); c.setAttribute("r",1.1);
+    c.setAttribute("fill","#d8b26a");
+    c.setAttribute("opacity", 0.06 + 0.08*i/Math.max(a.length-1,1));
+    ghosts.appendChild(c);
+  });
+  if (latest){ $("mark").setAttribute("cx",(latest.value+1)*50); $("mark").setAttribute("opacity",1); }
+
+  drawTrail(mine, given);
+  $("trail-label").textContent = given.length
+    ? `your readings · ${given.length} traded from ${them}` : "your readings";
+
+  $("me-note").textContent = me.locked ? "locked, you are out" : `${mine.length} observed`;
+  $("them-note").textContent = they.locked ? "locked, they are out"
+    : they.trade_offer ? "offering a trade"
+    : `${they.reading_count ?? 0} observed · hidden from you`;
+
+  $("log").innerHTML = (s.log||[]).map(l => `<div>${l}</div>`).join("");
+
+  const dead = s.finished || me.locked;
+  ["btn-observe","btn-advance","btn-trade"].forEach(id => $(id).disabled = dead);
+  $("btn-lock").disabled = dead || !PICK;
+  $("btn-trade").classList.toggle("on", Boolean(me.trade_offer));
+  $("btn-trade").textContent = me.trade_offer ? "trade offered" : "Offer a trade";
+
+  $("curtain").classList.toggle("hidden", !s.finished);
+  if (s.finished){
+    $("curtain-line").textContent =
+      s.winner === ME ? "You named it."
+      : s.winner ? "They named it first."
+      : me.locked ? "Both of you were wrong."
+      : "The universe ran down.";
+    $("curtain-truth").textContent =
+      `The law was ${LAW_NAMES[s.law]||s.law}. Your score: ${me.score ?? 0}.`;
+  }
+}
+
+function drawTrail(mine, given){
+  const svg = $("trail"); svg.innerHTML = "";
+  const all = [...mine, ...given].sort((a,b) => a.step - b.step);
+  if (!all.length) return;
+  const span = Math.max(...all.map(r => r.step), 1);
+  const pt = r => [(r.step/span)*100, 20 - r.value*17];
+
+  svg.insertAdjacentHTML("beforeend",
+    `<line x1="0" y1="20" x2="100" y2="20" stroke="#1b1f27" stroke-width=".3"/>`);
+  if (mine.length > 1){
+    svg.insertAdjacentHTML("beforeend",
+      `<polyline points="${mine.map(r=>pt(r).join(",")).join(" ")}" fill="none"
+        stroke="#d8b26a" stroke-width=".7" opacity=".75"/>`);
+  }
+  for (const r of all){
+    const [cx,cy] = pt(r);
+    svg.insertAdjacentHTML("beforeend",
+      `<circle cx="${cx}" cy="${cy}" r="1.3" fill="${r.source==="self"?"#d8b26a":"#6f93b8"}"/>`);
+  }
+}
+
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast.t); toast.t = setTimeout(()=>t.classList.remove("show"), 2200);
+}
+</script>
+</body>
+</html>
